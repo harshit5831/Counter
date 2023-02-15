@@ -1,95 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
+import Button from "./components/Button";
 import "./App.css";
-import { Button, Card, Form } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
+export default function App() {
+  const [count, setCount] = useState(0);
 
-function Todo({ todo, index, markTodo, removeTodo }) {
-  return (
-    <div
-      className="todo"
-      
-    >
-      <span style={{ textDecoration: todo.isDone ? "line-through" : "" }}>{todo.text}</span>
-      <div>
-        <Button variant="outline-success" onClick={() => markTodo(index)}>✓</Button>{' '}
-        <Button variant="outline-danger" onClick={() => removeTodo(index)}>✕</Button>
-      </div>
-    </div>
-  );
-}
-
-function FormTodo({ addTodo }) {
-  const [value, setValue] = React.useState("");
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    if (!value) return;
-    addTodo(value);
-    setValue("");
+  let incrementCount = () => {
+  let count_value = document.getElementById("count_variable");
+  console.log(count_value.innerText)
+   if(count < 10)
+    setCount(count + 1);
+    if(count_value.innerText == 9)
+    count_value.style.color = "red";
+    if(count_value.innerText >= 4 && count_value.innerText <= 8)
+    count_value.style.color = "blue";
+    if(count_value.innerText >= -1 && count_value.innerText <= 3)
+    count_value.style.color = "green";
   };
 
-  return (
-    <Form onSubmit={handleSubmit}> 
-    <Form.Group>
-      <Form.Label><b>Add Todo</b></Form.Label>
-      <Form.Control type="text" className="input" value={value} onChange={e => setValue(e.target.value)} placeholder="Add new todo" />
-    </Form.Group>
-    <Button variant="primary mb-3" type="submit">
-      Submit
-    </Button>
-  </Form>
-  );
-}
-
-function App() {
-  const [todos, setTodos] = React.useState([
-    {
-      text: "This is a sampe todo",
-      isDone: false
-    }
-  ]);
-
-  const addTodo = text => {
-    const newTodos = [...todos, { text }];
-    setTodos(newTodos);
-  };
-
-  const markTodo = index => {
-    const newTodos = [...todos];
-    newTodos[index].isDone = true;
-    setTodos(newTodos);
-  };
-
-  const removeTodo = index => {
-    const newTodos = [...todos];
-    newTodos.splice(index, 1);
-    setTodos(newTodos);
+  let decrementCount = () => {
+    if(count > 0)
+    setCount(count - 1);
   };
 
   return (
     <div className="app">
-      <div className="container">
-        <h1 className="text-center mb-4">Todo List</h1>
-        <FormTodo addTodo={addTodo} />
-        <div>
-          {todos.map((todo, index) => (
-            <Card>
-              <Card.Body>
-                <Todo
-                key={index}
-                index={index}
-                todo={todo}
-                markTodo={markTodo}
-                removeTodo={removeTodo}
-                />
-              </Card.Body>
-            </Card>
-          ))}
+      <div>
+        <div class="count">
+          <h3>Count:</h3>
+          <h1 id="count_variable">{count}</h1>
+        </div>
+        <div class="buttons">
+          <Button title={"-"} action={decrementCount} />
+          <Button title={"+"} action={incrementCount} />
         </div>
       </div>
     </div>
   );
 }
-
-export default App;
